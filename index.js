@@ -730,10 +730,10 @@ function getTincapheData() {
 }
 
 let displayJson = []
+let serverStatus = ""
 const postDataToCoffeeWeb = (robustaArray, arabicaArray) => {
     let data = robustaArray.concat(arabicaArray);
     // console.log(data)
-    displayJson = data
     fetch('https://www.coffeeweb.org/api/TincapheAuth/InsertTincapheData', {
         method: 'POST',
         headers: {
@@ -748,6 +748,8 @@ const postDataToCoffeeWeb = (robustaArray, arabicaArray) => {
             if (!response.ok) {
                 throw new Error('Request failed with status ' + response.status);
             }
+            displayJson = data
+            serverStatus = "server running without any issue"
             return response.json();
         })
         .then(result => {
@@ -755,6 +757,8 @@ const postDataToCoffeeWeb = (robustaArray, arabicaArray) => {
         })
         .catch(error => {
             console.error("error", error);
+            displayJson = []
+            serverStatus = "issue with server"
         });
 }
 
@@ -820,6 +824,9 @@ const postXECurrencyData = (xeArray) => {
 
 app.get("/",(req,res)=>{
     res.send(displayJson)
+})
+app.get("/health",(req,res)=>{
+    res.send(serverStatus)
 })
 
 
