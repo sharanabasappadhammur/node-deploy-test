@@ -822,11 +822,15 @@ const postXECurrencyData = (xeArray) => {
         });
 }
 
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
     res.send(displayJson)
 })
-app.get("/health",(req,res)=>{
-    res.send(serverStatus)
+app.get("/health", (req, res) => {
+    try{
+        res.status(200).json("server running without any issue");
+    } catch{
+        res.status(500).json("issue with server")
+    }
 })
 
 
